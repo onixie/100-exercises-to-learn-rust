@@ -26,6 +26,7 @@ impl TicketStore {
             title: ticket.title,
             description: ticket.description,
             status: Status::ToDo,
+            version: 0,
         };
         self.tickets.insert(id, ticket);
         id

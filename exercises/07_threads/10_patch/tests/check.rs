@@ -17,15 +17,21 @@ fn works() {
     assert_eq!(ticket.title, draft.title);
     assert_eq!(ticket.description, draft.description);
 
-    let patch = TicketPatch {
+    let mut patch = TicketPatch {
         id: ticket_id,
         title: None,
         description: None,
         status: Some(Status::InProgress),
+        version: 0,
     };
-    client.update(patch).unwrap();
+    let next_version = client.update(patch.clone()).unwrap();
+    assert_eq!(ticket.status, Status::ToDo);
+
+    patch.version = next_version;
+    let next_version = client.update(patch).unwrap();
 
     let ticket = client.get(ticket_id).unwrap().unwrap();
+    assert_eq!(next_version, 2);
     assert_eq!(ticket.id, ticket_id);
     assert_eq!(ticket.status, Status::InProgress);
 }

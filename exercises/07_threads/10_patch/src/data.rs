@@ -7,6 +7,7 @@ pub struct Ticket {
     pub title: TicketTitle,
     pub description: TicketDescription,
     pub status: Status,
+    pub(crate) version: usize,
 }
 
 #[derive(Clone, Debug, PartialEq, Eq)]
@@ -21,6 +22,7 @@ pub struct TicketPatch {
     pub title: Option<TicketTitle>,
     pub description: Option<TicketDescription>,
     pub status: Option<Status>,
+    pub version: usize,
 }
 
 #[derive(Clone, Debug, Copy, PartialEq, Eq)]

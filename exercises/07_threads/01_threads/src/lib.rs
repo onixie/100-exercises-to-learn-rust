@@ -15,7 +15,16 @@
 use std::thread;
 
 pub fn sum(v: Vec<i32>) -> i32 {
-    todo!()
+    let (v1, v2) = {
+        let (v1, v2) = v.split_at(v.len() / 2);
+        (v1.to_vec(), v2.to_vec())
+    };
+    let j1 = thread::spawn(move || -> i32 { v1.iter().sum() });
+    let j2 = thread::spawn(move || -> i32 { v2.iter().sum() });
+
+    let r1 = j1.join().unwrap();
+    let r2 = j2.join().unwrap();
+    r1 + r2
 }
 
 #[cfg(test)]
@@ -30,6 +39,11 @@ mod tests {
     #[test]
     fn one() {
         assert_eq!(sum(vec![1]), 1);
+    }
+
+    #[test]
+    fn two() {
+        assert_eq!(sum(vec![1, 2]), 3);
     }
 
     #[test]
