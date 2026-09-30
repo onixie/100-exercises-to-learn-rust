@@ -1,14 +1,14 @@
 // TODO: Implement `Ticket::assigned_to` using `Option` as the return type.
 
 #[derive(Debug, PartialEq)]
-struct Ticket {
+pub struct Ticket {
     title: String,
     description: String,
     status: Status,
 }
 
 #[derive(Debug, PartialEq)]
-enum Status {
+pub enum Status {
     ToDo,
     InProgress { assigned_to: String },
     Done,
@@ -36,7 +36,11 @@ impl Ticket {
         }
     }
     pub fn assigned_to(&self) -> Option<&String> {
-        todo!()
+        if let Status::InProgress { ref assigned_to } = self.status {
+            Some(assigned_to)
+        } else {
+            None
+        }
     }
 }
 

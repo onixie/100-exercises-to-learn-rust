@@ -6,8 +6,9 @@ mod tests {
 
     #[test]
     fn u16_to_u32() {
-        let v: u32 = todo!();
+        let v: u32 = 47u16 as u32;
         assert_eq!(47u16 as u32, v);
+        let b = (1 == 1) as i8 as f32;
     }
 
     #[test]
@@ -18,20 +19,42 @@ mod tests {
         // The compiler is only able to pick on this because the value is a
         // literal. If we were to use a variable, the compiler wouldn't be able to
         // catch this at compile time.
+
+        //let x = 255 as i8;
+        //let x = { 255 } as i8;
+        let x = { 255 + 0 } as i8;
+        let x = {
+            if true {
+                255
+            } else {
+                255
+            }
+        } as i8;
+
+        let x = 255u8 as i8;
+        let x = 255u32 as i8;
+        let z: u8 = 255;
+        let x = z as i8;
+        let z = 255;
+        let x = z as i8;
+        // let x = { 255 as i8 };
+        // let x: i8 = 255;
         #[allow(overflowing_literals)]
-        let x = { 255 as i8 };
+        let x = 255 as i8;
+        #[allow(overflowing_literals)]
+        let x = 255i8;
 
         // You could solve this by using exactly the same expression as above,
         // but that would defeat the purpose of the exercise. Instead, use a genuine
         // `i8` value that is equivalent to `255` when converted to `u8`.
-        let y: i8 = todo!();
+        let y: i8 = -1;
 
         assert_eq!(x, y);
     }
 
     #[test]
     fn bool_to_u8() {
-        let v: u8 = todo!();
+        let v: u8 = true as u8;
         assert_eq!(true as u8, v);
     }
 }

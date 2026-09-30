@@ -5,6 +5,19 @@
 // It should also have a method named `is_available` that returns a `true` if the quantity is
 // greater than 0, otherwise `false`.
 
+/// Order with price of a unit and the quantity of units.
+pub struct Order {
+    price: u32,
+    quantity: u32,
+}
+
+impl Order {
+    /// Returns `true` if the `quantity` is greater than `0`, otherwise `false`.
+    pub fn is_available(self) -> bool {
+        self.quantity > 0
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -1,6 +1,11 @@
 // TODO: Define a function named `sum` that takes a reference to a slice of `u32` and returns the sum of all
 //  elements in the slice.
 
+/// Returns the sum of all `ns` values
+pub fn sum(ns: &[u32]) -> u32 {
+    ns.iter().sum()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -2,3 +2,11 @@
 name = "packages"
 version = "0.1.0"
 edition = "2021"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
+
+[lib]
+crate-type = ["staticlib", "rlib", "a"]
+path = "src/lib.rs"

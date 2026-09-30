@@ -1,6 +1,6 @@
 use std::cmp::PartialEq;
 
-struct Ticket {
+pub struct Ticket {
     title: String,
     description: String,
     status: String,
@@ -8,7 +8,16 @@ struct Ticket {
 
 // TODO: Implement the `PartialEq` trait for `Ticket`.
 
-impl PartialEq for Ticket {}
+impl PartialEq for Ticket {
+    /// See: [PartialEq::eq]
+    ///
+    /// Implementation notes
+    ///
+    /// Two `Tickets` are equal only if their title, description and status are equal.
+    fn eq(&self, rhs: &Self) -> bool {
+        self.title == rhs.title && self.description == rhs.description && self.status == rhs.status
+    }
+}
 
 #[cfg(test)]
 mod tests {

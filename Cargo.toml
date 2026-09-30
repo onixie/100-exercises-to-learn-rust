@@ -9,4 +9,10 @@ resolver = "2"
 # This is needed to guarantee the expected behaviour on that specific exercise,
 # regardless of the "global" setting for `overflow-checks` on the `dev` profile.
 [profile.dev.package.copy]
+overflow-checks = false
+
+[profile.dev.package.overflow]
+overflow-checks = false
+
+[profile.dev.package.outro_02]
 overflow-checks = true

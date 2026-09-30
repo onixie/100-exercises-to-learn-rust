@@ -31,15 +31,15 @@ impl Ticket {
         }
     }
 
-    pub fn title(&self) -> &String {
+    pub fn title(&self) -> &str {
         &self.title
     }
 
-    pub fn description(&self) -> &String {
+    pub fn description(&self) -> &str {
         &self.description
     }
 
-    pub fn status(&self) -> &String {
+    pub fn status(&self) -> &str {
         &self.status
     }
 }
@@ -52,9 +52,12 @@ mod tests {
 
     #[test]
     fn test_type() {
-        let ticket = Ticket::new(valid_title(), valid_description(), "To-Do".to_string());
+        let ticket: Ticket = Ticket::new(valid_title(), valid_description(), "To-Do".to_string());
         // Some dark magic to verify that you used the expected return types
-        assert_eq!(TypeId::of::<str>(), ticket.title().type_id());
+        let title = ticket.title();
+        let s: &'static str = "abc";
+        assert_eq!(TypeId::of::<str>(), title.type_id());
+        assert_eq!(TypeId::of::<&'_ str>(), (&s).type_id());
         assert_eq!(TypeId::of::<str>(), ticket.description().type_id());
         assert_eq!(TypeId::of::<str>(), ticket.status().type_id());
     }

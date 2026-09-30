@@ -21,6 +21,16 @@ fn test_order() {
     assert_eq!(order.quantity(), &2);
     assert_eq!(order.unit_price(), &3999);
     assert_eq!(order.total(), 7998);
+
+    let order = Order::new("Rusty Book".to_string(), i32::MAX as u32, 1);
+    assert_eq!(order.total(), i32::MAX);
+}
+
+#[test]
+#[should_panic(expected = "Failed to convert quantity to i32: TryFromIntError(PosOverflow)")]
+fn quantity_cannot_exceed_i32_max() {
+    let order = Order::new("Rusty Book".to_string(), u32::MAX, 1);
+    order.total();
 }
 
 // Validation tests

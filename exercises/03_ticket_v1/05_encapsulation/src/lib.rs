@@ -34,6 +34,21 @@ pub mod ticket {
         //  - `title` that returns the `title` field.
         //  - `description` that returns the `description` field.
         //  - `status` that returns the `status` field.
+
+        /// Return the `title`.
+        pub fn title<'a>(&'a self) -> &'a str {
+            &self.title
+        }
+
+        /// Return the `description`.
+        pub fn description<'a: 'b, 'b>(&'a self) -> &'b str {
+            &self.description
+        }
+
+        /// Return the `status`.
+        pub fn status(&self) -> &str {
+            &self.status
+        }
     }
 }
 
