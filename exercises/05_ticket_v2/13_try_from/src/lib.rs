@@ -2,10 +2,34 @@
 //  The parsing should be case-insensitive.
 
 #[derive(Debug, PartialEq, Clone)]
-enum Status {
+pub enum Status {
     ToDo,
     InProgress,
     Done,
+}
+
+impl TryFrom<&str> for Status {
+    type Error = String;
+
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        if value.eq_ignore_ascii_case("Todo") {
+            Ok(Self::ToDo)
+        } else if value.eq_ignore_ascii_case("InProgress") {
+            Ok(Self::InProgress)
+        } else if value.eq_ignore_ascii_case("Done") {
+            Ok(Self::Done)
+        } else {
+            Err("Cannot convert from String `{value}`".into())
+        }
+    }
+}
+
+impl TryFrom<String> for Status {
+    type Error = String;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        TryFrom::<&str>::try_from(&value)
+    }
 }
 
 #[cfg(test)]

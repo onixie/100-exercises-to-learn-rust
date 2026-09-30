@@ -2,29 +2,37 @@
 
 pub struct WeekTemperatures {
     // TODO
+    data: [Option<i32>; 7],
 }
 
 pub enum Weekday {
-    Monday,
+    Monday = 0,
     Tuesday,
     Wednesday,
     Thursday,
     Friday,
     Saturday,
-    Sunday,
+    Sunday = 6,
+    Someday,
 }
 
 impl WeekTemperatures {
     pub fn new() -> Self {
-        todo!()
+        Self { data: [None; 7] }
     }
 
+    /// # Precondition
+    ///
+    /// `day` must be a valid `usize` value in the range of [0, 6]
     pub fn get_temperature(&self, day: Weekday) -> Option<i32> {
-        todo!()
+        self.data[day as usize]
     }
 
+    /// # Precondition
+    ///
+    /// `day` must be a valid `usize` value in the range of [0, 6]
     pub fn set_temperature(&mut self, day: Weekday, temperature: i32) {
-        todo!()
+        self.data[day as usize] = Some(temperature);
     }
 }
 
@@ -76,5 +84,12 @@ mod tests {
             Some(50)
         );
         assert_eq!(week_temperatures.get_temperature(Weekday::Sunday), Some(55));
+    }
+
+    #[test]
+    #[should_panic(expected = "index out of bounds: the len is 7 but the index is 7")]
+    fn test_out_of_bound_index() {
+        let week_temperatures = WeekTemperatures::new();
+        week_temperatures.get_temperature(Weekday::Someday);
     }
 }
