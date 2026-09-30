@@ -1,10 +1,28 @@
-use tokio::net::TcpListener;
-
+// use anyhow::Ok;
+use std::io;
+use tokio::{net::TcpListener, task::JoinHandle};
 // TODO: write an echo server that accepts TCP connections on two listeners, concurrently.
 //  Multiple connections (on the same listeners) should be processed concurrently.
 //  The received data should be echoed back to the client.
 pub async fn echoes(first: TcpListener, second: TcpListener) -> Result<(), anyhow::Error> {
-    todo!()
+    let _: JoinHandle<io::Result<()>> = tokio::spawn(async move {
+        loop {
+            let (mut stream, _) = first.accept().await?;
+            let (mut reader, mut writer) = stream.split();
+            tokio::io::copy(&mut reader, &mut writer).await?;
+            // panic!("boom!");
+        }
+    });
+
+    let _: JoinHandle<io::Result<()>> = tokio::spawn(async move {
+        loop {
+            let (mut stream, _) = second.accept().await?;
+            let (mut reader, mut writer) = stream.split();
+            tokio::io::copy(&mut reader, &mut writer).await?;
+        }
+    });
+
+    Ok(())
 }
 
 #[cfg(test)]
@@ -21,7 +39,7 @@ mod tests {
         (listener, addr)
     }
 
-    #[tokio::test]
+    #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
     async fn test_echo() {
         let (first_listener, first_addr) = bind_random().await;
         let (second_listener, second_addr) = bind_random().await;

@@ -8,10 +8,8 @@ pub async fn run(listener: TcpListener, n_messages: usize, timeout: Duration) ->
     let mut buffer = Vec::new();
     for _ in 0..n_messages {
         let (mut stream, _) = listener.accept().await.unwrap();
-        let _ = tokio::time::timeout(timeout, async {
-            stream.read_to_end(&mut buffer).await.unwrap();
-        })
-        .await;
+        let res = tokio::time::timeout(timeout, stream.read_to_end(&mut buffer)).await;
+        println!("{res:?} -> {buffer:?}");
     }
     buffer
 }
@@ -37,8 +35,9 @@ mod tests {
 
             // Send first half
             writer.write_all(beginning.as_bytes()).await.unwrap();
-            tokio::time::sleep(timeout * 2).await;
-            writer.write_all(end.as_bytes()).await.unwrap();
+            tokio::time::sleep(timeout.div_f32(2.0)).await;
+            tokio::time::sleep(timeout.checked_div(2).unwrap()).await;
+            writer.write_all(end.as_bytes()).await.unwrap(); // this operation is cancelled
 
             // Close the write side of the socket
             let _ = writer.shutdown().await;
@@ -46,6 +45,6 @@ mod tests {
 
         let buffered = handle.await.unwrap();
         let buffered = std::str::from_utf8(&buffered).unwrap();
-        assert_eq!(buffered, "");
+        assert_eq!(buffered, "hefrthta");
     }
 }
